@@ -10,7 +10,7 @@ bot = LightningBot(
   bot_name = 'Basic' + '%04d' % randint(0, 9999),
 
   # Or token for ranked server
-  #api_token=None,
+  #api_token = '00000000000000000000',
 
 )
 
@@ -22,7 +22,7 @@ move_direction = randint(0, 3)
 while bot.waitForNextTurn():
 
   # Get directions of players
-  #bot_directions = bot.getDirections()
+  bot_directions = bot.getDirections()
 
   # After crossing the board, avoid hitting self
   if bot.turn_number % bot.game_size == 0:

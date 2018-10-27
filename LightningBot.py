@@ -184,9 +184,7 @@ class LightningBot:
     response_data = self.request('directions', self.api_token, str(self.turn_number))
 
     for bot in response_data['directions']:
-      self.game_bots[bot['pseudo']] = {
-        'direction': bot['direction']
-      }
+      self.game_bots[bot['pseudo']]['direction'] = bot['direction']
 
     print('Bots')
     pprint(self.game_bots)
