@@ -78,7 +78,7 @@ class LightningBot:
 
     if self.next_turn_start_time > datetime.now():
       seconds_to_sleep = (self.next_turn_start_time - datetime.now()).total_seconds()
-      print('Waiting ' + str(seconds_to_sleep) + ' seconds until the next phase...')
+      #print('Waiting ' + str(seconds_to_sleep) + ' seconds until the next phase...')
       time.sleep(seconds_to_sleep)
 
     self.turn_number += 1
