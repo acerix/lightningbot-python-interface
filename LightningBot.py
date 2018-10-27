@@ -195,7 +195,7 @@ class LightningBot:
   # 0: right, 1: down, 2: left, 3: up
   def move(self, move_direction):
     self.move_direction = move_direction
-    print('Turn', self.turn_number, self.DIRECTION_NAMES[self.move_direction])
+    print('Turn', self.turn_number, ': ', self.DIRECTION_NAMES[self.move_direction])
     response_data = self.request('move', self.api_token, str(self.move_direction), str(self.turn_number))
     #pprint(response_data)
 
