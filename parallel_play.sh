@@ -12,7 +12,7 @@ echo "Launching $2 bots..."
 
 for i in $(seq $2)
 do
-  eval "./$1" > /dev/null &
+  eval "./$1" &
   pids[${i}]=$! # store process ids
 done
 

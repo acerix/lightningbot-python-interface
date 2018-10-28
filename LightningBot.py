@@ -3,6 +3,7 @@ import requests
 import json
 import time
 from datetime import datetime, timezone, timedelta
+from os import system
 from pprint import pprint
 
 class LightningBot:
@@ -20,13 +21,16 @@ class LightningBot:
     3: 'Up',
   }
 
-  def __init__(self, bot_name=None, api_token=None):
+  def __init__(self, bot_name=None, api_token=None, background_output=True):
 
     # "None" for random name
     self.bot_name = bot_name
 
     # "None" for test mode
     self.api_token = api_token
+
+    # Only output log messages, no tiles, etc, useful to run in the background or multiple bots in the same terminal
+    self.background_output = background_output
 
     # Unix timestamp for the end of the turn
     self.next_turn_start_time = datetime.fromtimestamp(0)
@@ -192,7 +196,6 @@ class LightningBot:
   # Get directions of bots
   def getDirections(self):
 
-    print('Requesting directions...')
     response_data = self.request('directions', self.api_token, str(self.turn_number))
 
     for bot in response_data['directions']:
@@ -219,7 +222,6 @@ class LightningBot:
   # 0: right, 1: down, 2: left, 3: up
   def move(self, move_direction):
     self.move_direction = move_direction
-    print(self.bot_name, 'Turn', self.turn_number, '-', self.DIRECTION_NAMES[self.move_direction])
     response_data = self.request('move', self.api_token, str(self.move_direction), str(self.turn_number))
     #pprint(response_data)
 
@@ -227,6 +229,44 @@ class LightningBot:
   def printTiles(self):
     for y in reversed(list(zip(*self.tiles))):
       print( ''.join( ['●' if x else '○' for x in y] ) )
+
+
+  # Output updated direction info
+  def displayDirectionUpdate(self):
+
+    if self.background_output:
+      print(
+        self.bot_name,
+        self.turn_number,
+        self.game_bots[self.bot_name]['position'],
+        self.DIRECTION_NAMES[self.move_direction],
+      )
+
+    else:
+      self.refreshConsoleOutput()
+
+
+  # Refresh the displayed output
+  def refreshConsoleOutput(self):
+
+    # Clear screen so output positions are consistent
+    system('clear')
+
+    print('Game:', self.game_name)
+    print('Size:', self.game_size)
+    print('Turn:', self.turn_number)
+    print('')
+    print('Bot Name:', self.bot_name)
+    print('Position:', self.game_bots[self.bot_name]['position'])
+    print('Direction:', self.DIRECTION_NAMES[self.move_direction])
+    print('')
+    pprint(self.game_bots)
+
+    print('')
+    self.printTiles()
+
+    print('')
+    print('Next phase starts in ' + str( (self.next_turn_start_time - datetime.now()).total_seconds() ) + ' seconds')
 
 
   # Get the position after moving
