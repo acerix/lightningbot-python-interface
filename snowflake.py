@@ -14,8 +14,13 @@ turn_path = [1, 1, -1, -1, 0, 1, 0]
 #cycle_offset = -1
 cycle_offset = randint(0, len(turn_path))
 
+# Reverse the direction
+if randint(0, 1) == 0:
+  turn_path = [i * -1 for i in reversed(turn_path)]
+
 # Randomize the order
-shuffle(turn_path)
+if randint(0, 100) != 0:
+  turn_path = shuffle(turn_path)
 
 # First move
 bot.waitForNextTurn()
