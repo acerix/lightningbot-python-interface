@@ -318,3 +318,8 @@ class LightningBot:
 
     return tiles[ position[0] ][ position[1] ]
 
+
+  # Rotate the move direction by an integer
+  def rotateMoveDirection(self, move_direction, rotation):
+    return (move_direction + rotation) % 4
+
