@@ -66,6 +66,8 @@ class LightningBot:
 
     print('Bot Name:', self.bot_name)
 
+    print('Game starts in ' + str( (self.next_turn_start_time - datetime.now()).total_seconds() ) + ' seconds...')
+
     # Wait for game to start
     self.waitForNextTurn()
 
@@ -137,7 +139,7 @@ class LightningBot:
     if self.bot_name is None:
       self.bot_name = 'PyLB' + str(random.randint(0, 9999))
 
-    print('Requesting token...')
+    print('Connecting to test game...')
     response_data = self.request('connect', self.bot_name)
 
     return response_data['token']
@@ -145,9 +147,8 @@ class LightningBot:
   # Connect to a game with registered token, ie. login to ranked server
   def connect(self):
 
-    print('Connecting to game...')
+    print('Connecting to ranked game...')
     response_data = self.request('connect', self.api_token)
-    #pprint(response_data)
 
     return response_data['pseudo']
 
@@ -211,4 +212,49 @@ class LightningBot:
     print(self.bot_name, 'Turn', self.turn_number, '-', self.DIRECTION_NAMES[self.move_direction])
     response_data = self.request('move', self.api_token, str(self.move_direction), str(self.turn_number))
     #pprint(response_data)
+
+  # Display a 2d array of tiles in the console
+  def printTiles(self, tiles):
+    for y in reversed(list(zip(*tiles))):
+      print( ''.join( ['   ' if x==0 else ' ● ' for x in y] ) )
+
+
+  # Get the position after moving
+  def getNextPosition(self, last_position, move_direction):
+
+    position = last_position[:]
+
+    # Find where we'd end up after moving
+    if move_direction == 0:
+      position[0] = (position[0] + 1) % self.game_size
+    elif move_direction == 1:
+      position[1] = (position[1] - 1) % self.game_size
+    elif move_direction == 2:
+      position[0] = (position[0] - 1) % self.game_size
+    elif move_direction == 3:
+      position[1] = (position[1] + 1) % self.game_size
+
+    return position
+
+
+  # Count how many opponents will move to this position if they don't turn
+  def opponentsAreMovingToPosition(self, position):
+
+    opponents = 0
+
+    for bot_name, game_bot in self.game_bots.items():
+      if bot_name != self.bot_name:
+        if self.getNextPosition(game_bot['position'], game_bot['direction']) == position:
+          opponents += 1
+
+    return opponents
+
+
+  # Display a 2d array of tiles in the console
+  def positionIsBlocked(self, tiles, position):
+
+    if self.opponentsAreMovingToPosition(position):
+      return 1
+
+    return tiles[ position[0] ][ position[1] ]
 

@@ -18,6 +18,8 @@ turn_preference = -1 if randint(0, 1) == 0 else 1
 # 0 = unblocked, 1 = blocked
 tiles = [ [0] * bot.game_size for _ in range(bot.game_size)]
 
+
+
 while bot.waitForNextTurn():
 
   # Get directions/positions of players
@@ -33,51 +35,28 @@ while bot.waitForNextTurn():
   for bot_name, game_bot in bot.game_bots.items():
     tiles[ game_bot['position'][0] ][ game_bot['position'][1] ] = 1
 
-  print('Tiles:')
-
-  # Display the tiles
-  for y in reversed(list(zip(*tiles))):
-    print( ''.join( ['   ' if x==0 else ' ● ' for x in y] ) )
-
   print('Position:', bot.game_bots[bot.bot_name]['position'])
-  print('Default Direction:', move_direction)
 
-  # Check where we'd end up after moving
-  next_position = bot.game_bots[bot.bot_name]['position'][:]
+  bot.printTiles(tiles)
 
-  if move_direction == 0:
-    next_position[0] = (next_position[0] + 1) % bot.game_size
-  elif move_direction == 1:
-    next_position[1] = (next_position[1] - 1) % bot.game_size
-  elif move_direction == 2:
-    next_position[0] = (next_position[0] - 1) % bot.game_size
-  elif move_direction == 3:
-    next_position[1] = (next_position[1] + 1) % bot.game_size
+  last_position = bot.game_bots[bot.bot_name]['position']
 
   # If next position is blocked
-  if tiles[ next_position[0] ][ next_position[1] ]:
-    # Swerve!
+  if bot.positionIsBlocked(tiles, bot.getNextPosition(last_position, move_direction)):
+    # Swerve
     print('Swerve!')
     move_direction = (move_direction + turn_preference) % 4
 
-  # Check where we'd end up after moving @todo dedupe!
-  next_position = bot.game_bots[bot.bot_name]['position'][:]
-
-  if move_direction == 0:
-    next_position[0] = (next_position[0] + 1) % bot.game_size
-  elif move_direction == 1:
-    next_position[1] = (next_position[1] - 1) % bot.game_size
-  elif move_direction == 2:
-    next_position[0] = (next_position[0] - 1) % bot.game_size
-  elif move_direction == 3:
-    next_position[1] = (next_position[1] + 1) % bot.game_size
-
-  # If next position is blocked
-  if tiles[ next_position[0] ][ next_position[1] ]:
+  # If swerved position is blocked
+  elif bot.positionIsBlocked(tiles, bot.getNextPosition(last_position, move_direction)):
     # Swerve the other way!
-    print('Swerve!!!')
+    print('Swerve back!!!')
     move_direction = (move_direction - turn_preference - turn_preference) % 4
 
-  print('Final Direction:', move_direction)
+  # If all options position are blocked
+  elif bot.positionIsBlocked(tiles, bot.getNextPosition(last_position, move_direction)):
+    print('No moves left')
+    move_direction = (move_direction + turn_preference) % 4
+    #exit()
 
   bot.move(move_direction)
