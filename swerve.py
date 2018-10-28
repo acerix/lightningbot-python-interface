@@ -2,6 +2,7 @@
 
 from LightningBot import LightningBot
 from random import randint
+from pprint import pprint
 
 bot = LightningBot('Swerve' + '%04d' % randint(0, 9999))
 
@@ -13,6 +14,11 @@ turn_after = -1
 turn_number = 0
 
 while bot.waitForNextTurn():
+
+  # Get directions of players
+  # bot_directions = bot.getDirections()
+
+  pprint(bot_directions)
 
   # Go straight
   if side_length < turn_after:

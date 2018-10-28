@@ -19,7 +19,7 @@ if randint(0, 1) == 0:
   turn_path = [i * -1 for i in reversed(turn_path)]
 
 # Randomize the order
-if randint(0, 100) != 0:
+if randint(0, 666) != 0:
   shuffle(turn_path)
 
 # First move
