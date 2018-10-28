@@ -4,7 +4,7 @@
 
 if [ -z "$1" ]
   then
-    echo "Usage: ./auto_play.sh [bot script]"
+    echo "Usage: ./auto_play.sh [bot script filename] [api token]"
     exit
 fi
 
@@ -12,6 +12,6 @@ while [ 1 ]
 do
   clear
   echo "Launching bot..."
-  ./$1
+  ./$1 $2
   sleep 5
 done
