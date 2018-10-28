@@ -12,7 +12,7 @@ bot = LightningBot(
 
 move_direction = randint(0, 3)
 
-while bot.waitForNextTurn():
+while bot.waitForNextTurnDirections():
 
   turn_direction = -1 if randint(0, 1) == 0 else 1
 

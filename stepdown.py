@@ -9,7 +9,7 @@ bot = LightningBot(
   api_token = argv[1] if len(argv) > 1 else None
 )
 
-while bot.waitForNextTurn():
+while bot.waitForNextTurnDirections():
 
   # Move down on odd turns
   if bot.turn_number % 2 == 0:

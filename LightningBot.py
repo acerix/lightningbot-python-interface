@@ -21,7 +21,7 @@ class LightningBot:
     3: 'Up',
   }
 
-  def __init__(self, bot_name=None, api_token=None, background_output=True):
+  def __init__(self, bot_name=None, api_token=None, background_output=False):
 
     # "None" for random name
     self.bot_name = bot_name
@@ -93,6 +93,16 @@ class LightningBot:
     self.turn_number += 1
 
     return True
+
+
+  # Wait until we have direections for the next turn
+  def waitForNextTurnDirections(self):
+    self.waitForNextTurn()
+    self.getDirections()
+    self.displayDirectionUpdate()
+
+    return True
+
 
   # Send request to the server, return parsed json
   def request(self, method_name, *args):

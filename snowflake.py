@@ -31,7 +31,7 @@ if randint(0, 666) != 0:
 bot.waitForNextTurn()
 bot.move(move_direction)
 
-while bot.waitForNextTurn():
+while bot.waitForNextTurnDirections():
 
   # Turn direction is based on position in cycle
   turn_direction = turn_path[(bot.turn_number + cycle_offset) % len(turn_path)]

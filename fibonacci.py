@@ -18,7 +18,7 @@ for i in range(2, 24):
 side_length = 0
 turn_number = 0
 
-while bot.waitForNextTurn():
+while bot.waitForNextTurnDirections():
 
   # Go straight
   if side_length < fibonacci_numbers[turn_number]:
