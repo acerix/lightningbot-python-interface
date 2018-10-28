@@ -3,33 +3,81 @@
 from LightningBot import LightningBot
 from random import randint
 from pprint import pprint
+from os import system
+from sys import argv
 
-bot = LightningBot('Swerve' + '%04d' % randint(0, 9999))
+bot = LightningBot(
+  bot_name = 'Swerve' + '%04d' % randint(0, 9999),
+  api_token = argv[1] if len(argv) > 1 else None
+)
 
 move_direction = randint(0, 3)
-turn_direction = -1 if randint(0, 1) == 0 else 1
+turn_preference = -1 if randint(0, 1) == 0 else 1
 
-side_length = 0
-turn_after = -1
-turn_number = 0
+# array of tiles to keep track of which one are blocked
+# 0 = unblocked, 1 = blocked
+tiles = [ [0] * bot.game_size for _ in range(bot.game_size)]
 
 while bot.waitForNextTurn():
 
-  # Get directions of players
-  # bot_directions = bot.getDirections()
+  # Get directions/positions of players
+  bot.getDirections()
 
-  pprint(bot_directions)
+  # Clear screen so output positions are consistent
+  system('clear')
 
-  # Go straight
-  if side_length < turn_after:
-    side_length += 1
+  print('Bots:')
+  pprint(bot.game_bots)
 
-  # Turn around the corner
-  else:
-    move_direction = (move_direction + turn_direction) % 4
-    side_length = 0
-    turn_number += 1
-    if turn_number > 0 and turn_number % 2 == 1:
-      turn_after += 1
+  # Mark all the tiles with bots are blocked
+  for bot_name, game_bot in bot.game_bots.items():
+    tiles[ game_bot['position'][0] ][ game_bot['position'][1] ] = 1
+
+  print('Tiles:')
+
+  # Display the tiles
+  for y in reversed(list(zip(*tiles))):
+    print( ''.join( ['   ' if x==0 else ' ● ' for x in y] ) )
+
+  print('Position:', bot.game_bots[bot.bot_name]['position'])
+  print('Default Direction:', move_direction)
+
+  # Check where we'd end up after moving
+  next_position = bot.game_bots[bot.bot_name]['position'][:]
+
+  if move_direction == 0:
+    next_position[0] = (next_position[0] + 1) % bot.game_size
+  elif move_direction == 1:
+    next_position[1] = (next_position[1] - 1) % bot.game_size
+  elif move_direction == 2:
+    next_position[0] = (next_position[0] - 1) % bot.game_size
+  elif move_direction == 3:
+    next_position[1] = (next_position[1] + 1) % bot.game_size
+
+  # If next position is blocked
+  if tiles[ next_position[0] ][ next_position[1] ]:
+    # Swerve!
+    print('Swerve!')
+    move_direction = (move_direction + turn_preference) % 4
+
+  # Check where we'd end up after moving @todo dedupe!
+  next_position = bot.game_bots[bot.bot_name]['position'][:]
+
+  if move_direction == 0:
+    next_position[0] = (next_position[0] + 1) % bot.game_size
+  elif move_direction == 1:
+    next_position[1] = (next_position[1] - 1) % bot.game_size
+  elif move_direction == 2:
+    next_position[0] = (next_position[0] - 1) % bot.game_size
+  elif move_direction == 3:
+    next_position[1] = (next_position[1] + 1) % bot.game_size
+
+  # If next position is blocked
+  if tiles[ next_position[0] ][ next_position[1] ]:
+    # Swerve the other way!
+    print('Swerve!!!')
+    move_direction = (move_direction - turn_preference - turn_preference) % 4
+
+  print('Final Direction:', move_direction)
 
   bot.move(move_direction)

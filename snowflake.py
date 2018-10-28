@@ -2,8 +2,13 @@
 
 from LightningBot import LightningBot
 from random import randint, shuffle
+from sys import argv
 
-bot = LightningBot('SnwFlk' + '%04d' % randint(0, 9999))
+bot = LightningBot(
+  bot_name = 'SnwFlk' + '%04d' % randint(0, 9999),
+  api_token = argv[1] if len(argv) > 1 else None
+)
+
 
 move_direction = randint(0, 3)
 

@@ -57,14 +57,14 @@ class LightningBot:
     if self.api_token is None:
       self.api_url = self.TEST_API_URL
       self.api_token = self.getToken()
-      print('Token:', self.api_token)
+      #print('Token:', self.api_token)
 
     # Connect with existing token
     else:
       self.api_url = self.RANKED_API_URL
       self.bot_name = self.connect()
 
-    print('Pseudo:', self.bot_name)
+    print('Bot Name:', self.bot_name)
 
     # Wait for game to start
     self.waitForNextTurn()
@@ -102,6 +102,11 @@ class LightningBot:
 
       # Game is over
       if response_data['error'] == 2:
+        print(response_data['description'])
+        exit()
+
+      # Bot won
+      if response_data['error'] == 200:
         print(response_data['description'])
         exit()
 
@@ -166,7 +171,7 @@ class LightningBot:
         'position': [bot['x'], bot['y']]
       }
 
-    print('Bots')
+    print('Bots:')
     pprint(self.game_bots)
 
     if self.bot_name not in self.game_bots:
@@ -184,10 +189,18 @@ class LightningBot:
     response_data = self.request('directions', self.api_token, str(self.turn_number))
 
     for bot in response_data['directions']:
-      self.game_bots[bot['pseudo']]['direction'] = bot['direction']
+      game_bot = self.game_bots[bot['pseudo']]
+      game_bot['direction'] = bot['direction']
 
-    print('Bots')
-    pprint(self.game_bots)
+      # Update positions, only works if called once per move
+      if bot['direction'] == 0:
+        game_bot['position'][0] = (game_bot['position'][0] + 1) % self.game_size
+      elif bot['direction'] == 1:
+        game_bot['position'][1] = (game_bot['position'][1] - 1) % self.game_size
+      elif bot['direction'] == 2:
+        game_bot['position'][0] = (game_bot['position'][0] - 1) % self.game_size
+      elif bot['direction'] == 3:
+        game_bot['position'][1] = (game_bot['position'][1] + 1) % self.game_size
 
     return response_data
 
@@ -195,7 +208,7 @@ class LightningBot:
   # 0: right, 1: down, 2: left, 3: up
   def move(self, move_direction):
     self.move_direction = move_direction
-    print('Turn', self.turn_number, ': ', self.DIRECTION_NAMES[self.move_direction])
+    print(self.bot_name, 'Turn', self.turn_number, '-', self.DIRECTION_NAMES[self.move_direction])
     response_data = self.request('move', self.api_token, str(self.move_direction), str(self.turn_number))
     #pprint(response_data)
 
