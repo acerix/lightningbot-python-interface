@@ -47,6 +47,9 @@ class LightningBot:
     # List of bots in the game
     self.game_bots = {}
 
+    # 2d array of game tiles, False when open, True when blocked
+    tiles = None
+
     # Last position
     self.position = None
 
@@ -165,6 +168,9 @@ class LightningBot:
     print('Game:', self.game_name)
     print('Size:', self.game_size)
 
+    # Make a 2d array of False's, which is game_size x game_size
+    self.tiles = [[False] * self.game_size for _ in range(self.game_size)]
+
     self.game_bots = {}
 
     for bot in response_data['positions']:
@@ -193,7 +199,7 @@ class LightningBot:
       game_bot = self.game_bots[bot['pseudo']]
       game_bot['direction'] = bot['direction']
 
-      # Update positions, only works if called once per move
+      # Update positions, only works if run once per move
       if bot['direction'] == 0:
         game_bot['position'][0] = (game_bot['position'][0] + 1) % self.game_size
       elif bot['direction'] == 1:
@@ -202,6 +208,10 @@ class LightningBot:
         game_bot['position'][0] = (game_bot['position'][0] - 1) % self.game_size
       elif bot['direction'] == 3:
         game_bot['position'][1] = (game_bot['position'][1] + 1) % self.game_size
+
+    # Mark all the tiles with bots as blocked
+    for bot_name, game_bot in self.game_bots.items():
+      self.tiles[ game_bot['position'][0] ][ game_bot['position'][1] ] = True
 
     return response_data
 
@@ -214,9 +224,9 @@ class LightningBot:
     #pprint(response_data)
 
   # Display a 2d array of tiles in the console
-  def printTiles(self, tiles):
-    for y in reversed(list(zip(*tiles))):
-      print( ''.join( [' ' if x==0 else '●' for x in y] ) )
+  def printTiles(self):
+    for y in reversed(list(zip(*self.tiles))):
+      print( ''.join( ['●' if x else '○' for x in y] ) )
 
 
   # Get the position after moving
@@ -250,11 +260,11 @@ class LightningBot:
     return opponents
 
 
-  # Display a 2d array of tiles in the console
+  # Returns True if the position is blocked, False if empty
   def positionIsBlocked(self, tiles, position):
 
     if self.opponentsAreMovingToPosition(position):
-      return 1
+      return True
 
     return tiles[ position[0] ][ position[1] ]
 
