@@ -216,7 +216,7 @@ class LightningBot:
   # Display a 2d array of tiles in the console
   def printTiles(self, tiles):
     for y in reversed(list(zip(*tiles))):
-      print( ''.join( ['   ' if x==0 else ' ● ' for x in y] ) )
+      print( ''.join( [' ' if x==0 else '●' for x in y] ) )
 
 
   # Get the position after moving
