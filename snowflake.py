@@ -20,7 +20,7 @@ if randint(0, 1) == 0:
 
 # Randomize the order
 if randint(0, 100) != 0:
-  turn_path = shuffle(turn_path)
+  shuffle(turn_path)
 
 # First move
 bot.waitForNextTurn()
