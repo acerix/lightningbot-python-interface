@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+from LightningBot import LightningBot
+from random import randint, shuffle
+
+bot = LightningBot('SnwFlk' + '%04d' % randint(0, 9999))
+
+move_direction = randint(0, 3)
+
+# Cycle of turns to make
+turn_path = [1, 1, -1, -1, 0, 1, 0]
+
+# Randomize where in the cycle to start
+#cycle_offset = -1
+cycle_offset = randint(0, len(turn_path))
+
+# Randomize the order
+shuffle(turn_path)
+
+# First move
+bot.waitForNextTurn()
+bot.move(move_direction)
+
+while bot.waitForNextTurn():
+
+  # Turn direction is based on position in cycle
+  turn_direction = turn_path[(bot.turn_number + cycle_offset) % len(turn_path)]
+
+  # Turn
+  if turn_direction != 0:
+    move_direction = (move_direction + turn_direction) % 4
+
+  # Move
+  bot.move(move_direction)
