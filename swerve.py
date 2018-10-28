@@ -35,7 +35,10 @@ while bot.waitForNextTurnDirections():
     # Go straight
     move_direction = original_move_direction
     turn_preference = -1 if randint(0, 1) == 0 else 1
-    # Surrender
-    exit()
+
+    if randint(0, 1) == 0:
+      # Surrender
+      print('Surrender!')
+      exit()
 
   bot.move(move_direction)

@@ -39,7 +39,8 @@ class LightningBot:
     self.session = requests.Session()
 
     # Minimum round trip time of server requests in seconds
-    self.latency = timedelta(milliseconds=50)
+    # Ping lightningbot.tk to measure your latency
+    self.latency = timedelta(milliseconds=99)
 
     # Turn number, first actual turn is 1
     self.turn_number = -1
