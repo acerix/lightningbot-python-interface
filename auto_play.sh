@@ -13,5 +13,5 @@ do
   clear
   echo "Launching bot..."
   ./$1 $2
-  sleep 0.1
+  sleep 10
 done
