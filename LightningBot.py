@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timezone, timedelta
 from os import system
 from pprint import pprint
+from sys import argv
 
 class LightningBot:
   """Python interface for lightingbot.tk"""
@@ -28,6 +29,10 @@ class LightningBot:
 
     # "None" for test mode
     self.api_token = api_token
+
+    # Get token from command line arg
+    if self.api_token is None and len(argv) > 1:
+      self.api_token = argv[1]
 
     # Only output log messages, no tiles, etc, useful to run in the background or multiple bots in the same terminal
     self.background_output = background_output
@@ -193,14 +198,10 @@ class LightningBot:
         'position': [bot['x'], bot['y']]
       }
 
-    print('Bots:')
     pprint(self.game_bots)
 
     if self.bot_name not in self.game_bots:
       raise Exception('Starting position not found')
-
-
-    print('Starting Position:', self.position)
 
     return response_data
 
@@ -312,15 +313,70 @@ class LightningBot:
 
 
   # Returns True if the position is blocked, False if empty
-  def positionIsBlocked(self, tiles, position):
+  def positionIsBlocked(self, position):
 
     if self.opponentsAreMovingToPosition(position):
       return True
 
-    return tiles[ position[0] ][ position[1] ]
+    return self.tiles[ position[0] ][ position[1] ]
 
 
   # Rotate the move direction by an integer
   def rotateMoveDirection(self, move_direction, rotation):
     return (move_direction + rotation) % 4
 
+  # Return the new position after moving in move_direction
+  def rotateMoveDirection(self, position, move_direction):
+    return (move_direction + rotation) % 4
+
+
+  # Return the direction that leads to the longest possible path
+  def directionToLongestPath(self):
+
+    position = self.game_bots[self.bot_name]['position']
+    direction = self.game_bots[self.bot_name]['direction']
+
+    if direction < 0:
+      return random.randint(0, 3)
+
+    max_depth = 0
+    max_depth_direction = direction
+
+    for turn_direction in [0, -1, 1]:
+
+      try_direction = (direction + turn_direction) % 4
+
+      depth = self.longestPathDepth(position, try_direction, [], )
+
+      print('turn', turn_direction, 'depth', depth)
+
+      if depth > max_depth:
+        max_depth = depth
+        max_depth_direction = try_direction
+
+    return max_depth_direction
+
+  # Starting at `position`, and coming from `direction` return the longest path possible
+  # blocked_tiles is a list of tiles that are blocked by our trail so far
+  # needs to be more efficient before it can look far ahead to be useful...
+  def longestPathDepth(self, position, direction, blocked_tiles, limit = 12):
+
+    max_depth = 0
+
+    new_position = self.getNextPosition(position, direction)
+    new_blocked_tiles = blocked_tiles[:]
+    new_blocked_tiles.append(new_position)
+
+    for turn_direction in [0, -1, 1]:
+
+      try_direction = (direction + turn_direction) % 4
+
+      if new_position in blocked_tiles or self.positionIsBlocked(new_position) or limit == 0:
+        depth = 0
+      else:
+        depth = 1 + self.longestPathDepth(new_position, try_direction, new_blocked_tiles, limit - 1)
+
+      if depth > max_depth:
+        max_depth = depth
+
+    return max_depth

@@ -20,17 +20,17 @@ while bot.waitForNextTurnDirections():
   original_move_direction = move_direction
 
   # If next position is blocked
-  if bot.positionIsBlocked(bot.tiles, bot.getNextPosition(last_position, move_direction)) or randint(0, 420) == 0:
+  if bot.positionIsBlocked(bot.getNextPosition(last_position, move_direction)) or randint(0, 420) == 0:
     # Swerve
     move_direction = bot.rotateMoveDirection(original_move_direction, turn_preference)
 
   # If swerved position is blocked
-  if bot.positionIsBlocked(bot.tiles, bot.getNextPosition(last_position, move_direction)):
+  if bot.positionIsBlocked(bot.getNextPosition(last_position, move_direction)):
     # Swerve the other way!
     move_direction = bot.rotateMoveDirection(original_move_direction, -1 * turn_preference)
 
   # If all options position are blocked
-  if bot.positionIsBlocked(bot.tiles, bot.getNextPosition(last_position, move_direction)):
+  if bot.positionIsBlocked(bot.getNextPosition(last_position, move_direction)):
     print('No moves left')
     # Go straight
     move_direction = original_move_direction
