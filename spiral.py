@@ -16,7 +16,7 @@ side_length = 0
 turn_after = -1
 turn_number = 0
 
-while bot.waitForNextTurn():
+while bot.waitForNextTurnDirections():
 
   # Go straight
   if side_length < turn_after:
