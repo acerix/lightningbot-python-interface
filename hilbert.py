@@ -13,13 +13,15 @@ bot = LightningBot(
 # Return the direction to the next point in the hilbert curve
 def directionToNextHilbertCurvePoint(game_size, position, direction):
 
+  number_of_tiles = game_size * game_size
+
   # Find current position in hilbert curve
-  for i in range(0, game_size * game_size):
+  for i in range(0, number_of_tiles):
     test_position = hilbertIndexToXY(i, game_size)
     if test_position[0] == position[0] and test_position[1] == position[1]:
       break
 
-  next_point = hilbertIndexToXY(i + direction, game_size)
+  next_point = hilbertIndexToXY( (i + direction) % number_of_tiles, game_size)
 
   # right
   if next_point[0] > position[0]:
