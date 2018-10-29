@@ -98,7 +98,8 @@ def hilbertIndexToXY(index, N):
   return [x, y]
 
 
-curve_direction = -1 if randint(0, 1) == 0 else 1
+#curve_direction = -1 if randint(0, 1) == 0 else 1
+curve_direction = -1
 
 while bot.waitForNextTurnDirections():
 
