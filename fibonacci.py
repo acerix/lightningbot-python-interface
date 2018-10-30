@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# Move straight by turn randomly when lengths in the fibonacci sequence
+# are reached
+
 from LightningBot import LightningBot
 from random import randint
 from sys import argv

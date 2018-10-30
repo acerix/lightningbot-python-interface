@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Continuously turn in one direction to make a spiral
+
 from LightningBot import LightningBot
 from random import randint
 from sys import argv

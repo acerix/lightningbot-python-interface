@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Follow a cycle of turns
+
 from LightningBot import LightningBot
 from random import randint, shuffle
 from sys import argv

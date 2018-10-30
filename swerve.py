@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Go straight but turn before crashing or if an opponent is moving in front of you
+
 from LightningBot import LightningBot
 from random import randint
 from pprint import pprint

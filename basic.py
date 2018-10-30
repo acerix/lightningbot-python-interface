@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# Choose a random direction and move in that direction forever,
+# but move one tile over when crossing the board so we don't hit our trail
+
 from LightningBot import LightningBot
 from random import randint
 from sys import argv

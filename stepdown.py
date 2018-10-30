@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# Make like a root and step down
+
 from LightningBot import LightningBot
 from random import randint
 from sys import argv

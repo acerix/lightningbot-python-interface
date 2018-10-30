@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
+# Move along a hilbert curve which fills the board
+
 from LightningBot import LightningBot
 from random import randint, shuffle
 from sys import argv
 
 bot = LightningBot(
   bot_name = 'Hilbert' + '%03d' % randint(0, 999),
-  api_token = argv[1] if len(argv) > 1 else None
 )
 
 
