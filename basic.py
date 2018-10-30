@@ -5,7 +5,6 @@
 
 from LightningBot import LightningBot
 from random import randint
-from sys import argv
 
 # Initialize bot and connect to a game
 bot = LightningBot(
@@ -14,7 +13,6 @@ bot = LightningBot(
   bot_name = 'Basic' + '%04d' % randint(0, 9999),
 
   # Or token for ranked server, supplied as first command line argument
-  api_token = argv[1] if len(argv) > 1 else None,
   #api_token = '00000000000000000000',
 
   # Disable the interactive output to run in the background or multiple bots in parallel in the same terminal
@@ -33,6 +31,10 @@ while bot.waitForNextTurnDirections():
   if bot.turn_number % bot.game_size == 0:
     bot.move((move_direction + 1) % 4)
 
-  # Otherwise just move in this direction
+  # Otherwise just go straight
   else:
+
+    # But avoid losing
+    move_direction = bot.avoidLosingMove(move_direction)
+
     bot.move(move_direction)

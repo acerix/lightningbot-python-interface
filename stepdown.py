@@ -4,11 +4,9 @@
 
 from LightningBot import LightningBot
 from random import randint
-from sys import argv
 
 bot = LightningBot(
   bot_name = 'StpDwn' + '%04d' % randint(0, 9999),
-  api_token = argv[1] if len(argv) > 1 else None
 )
 
 while bot.waitForNextTurnDirections():

@@ -4,11 +4,9 @@
 
 from LightningBot import LightningBot
 from random import randint, shuffle
-from sys import argv
 
 bot = LightningBot(
   bot_name = 'SnwFlk' + '%04d' % randint(0, 9999),
-  api_token = argv[1] if len(argv) > 1 else None
 )
 
 
@@ -41,6 +39,8 @@ while bot.waitForNextTurnDirections():
   # Turn
   if turn_direction != 0:
     move_direction = (move_direction + turn_direction) % 4
+
+  move_direction = bot.avoidLosingMove(move_direction)
 
   # Move
   bot.move(move_direction)

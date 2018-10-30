@@ -3,8 +3,7 @@
 # Move along a hilbert curve which fills the board
 
 from LightningBot import LightningBot
-from random import randint, shuffle
-from sys import argv
+from random import randint
 
 bot = LightningBot(
   bot_name = 'Hilbert' + '%03d' % randint(0, 999),

@@ -325,11 +325,6 @@ class LightningBot:
   def rotateMoveDirection(self, move_direction, rotation):
     return (move_direction + rotation) % 4
 
-  # Return the new position after moving in move_direction
-  def rotateMoveDirection(self, position, move_direction):
-    return (move_direction + rotation) % 4
-
-
   # Return the direction that leads to the longest possible path
   def directionToLongestPath(self):
 
@@ -380,3 +375,46 @@ class LightningBot:
         max_depth = depth
 
     return max_depth
+
+
+  # Return a list of directions which are open
+  def allowedDirections(self):
+    position = self.game_bots[self.bot_name]['position']
+    direction = self.game_bots[self.bot_name]['direction']
+    allowed_directions = []
+    for try_direction in [0, 1, 2, 3]:
+      if not self.positionIsBlocked(self.getNextPosition(position, try_direction)) and try_direction != (direction + 2) % 4:
+        allowed_directions.append(try_direction)
+
+    return allowed_directions
+
+
+  # If the proposed move would lose the game, try to return a move which doesn't
+  def avoidLosingMove(self, move_direction):
+
+    direction = self.game_bots[self.bot_name]['direction']
+
+    # Not allowed to go backwards
+    if move_direction == (direction + 2) % 4:
+      print('Trying to go backwards!!')
+
+      # Reverse to fix
+      move_direction = direction
+
+
+    # Return the move if ok
+    allowed_directions = self.allowedDirections()
+    if move_direction in allowed_directions:
+      return move_direction
+
+    print('allowed', allowed_directions)
+
+    # Return the next found move that is ok
+    for try_direction in [0, 1, 2, 3]:
+      if try_direction in allowed_directions:
+        return try_direction
+
+    # Surrender
+    self.move(-1)
+    raise Exception('No moves left, surrendered.')
+

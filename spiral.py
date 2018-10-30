@@ -4,11 +4,9 @@
 
 from LightningBot import LightningBot
 from random import randint
-from sys import argv
 
 bot = LightningBot(
   bot_name = 'Spiral' + '%04d' % randint(0, 9999),
-  api_token = argv[1] if len(argv) > 1 else None
 )
 
 move_direction = randint(0, 3)
@@ -31,5 +29,7 @@ while bot.waitForNextTurnDirections():
     turn_number += 1
     if turn_number > 0 and turn_number % 2 == 1:
       turn_after += 1
+
+  move_direction = bot.avoidLosingMove(move_direction)
 
   bot.move(move_direction)

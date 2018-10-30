@@ -5,11 +5,9 @@
 
 from LightningBot import LightningBot
 from random import randint
-from sys import argv
 
 bot = LightningBot(
   bot_name = 'Fibnci' + '%04d' % randint(0, 9999),
-  api_token = argv[1] if len(argv) > 1 else None
 )
 
 move_direction = randint(0, 3)
@@ -33,5 +31,7 @@ while bot.waitForNextTurnDirections():
     move_direction = (move_direction + turn_direction) % 4
     side_length = 0
     turn_number += 1
+
+  move_direction = bot.avoidLosingMove(move_direction)
 
   bot.move(move_direction)
