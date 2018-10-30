@@ -407,8 +407,6 @@ class LightningBot:
     if move_direction in allowed_directions:
       return move_direction
 
-    print('allowed', allowed_directions)
-
     # Return the next found move that is ok
     for try_direction in [0, 1, 2, 3]:
       if try_direction in allowed_directions:
