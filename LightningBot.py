@@ -197,6 +197,8 @@ class LightningBot:
       self.game_bots[bot['pseudo']] = {
         'position': [bot['x'], bot['y']]
       }
+      game_bot = self.game_bots[bot['pseudo']]
+      self.tiles[ game_bot['position'][0] ][ game_bot['position'][1] ] = True
 
     pprint(self.game_bots)
 
@@ -354,7 +356,7 @@ class LightningBot:
   # Starting at `position`, and coming from `direction` return the longest path possible
   # blocked_tiles is a list of tiles that are blocked by our trail so far
   # needs to be more efficient before it can look far ahead to be useful...
-  def longestPathDepth(self, position, direction, blocked_tiles, limit = 12):
+  def longestPathDepth(self, position, direction, blocked_tiles, limit = 8):
 
     max_depth = 0
 
@@ -399,7 +401,7 @@ class LightningBot:
       print('Trying to go backwards!!')
 
       # Reverse to fix
-      move_direction = direction
+      return direction
 
 
     # Return the move if ok
