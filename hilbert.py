@@ -107,6 +107,7 @@ while bot.waitForNextTurnDirections():
 
   move_direction = directionToNextHilbertCurvePoint(bot.game_size, bot.game_bots[bot.bot_name]['position'], curve_direction)
 
-  #move_direction = bot.avoidLosingMove(move_direction)
+  # turn this off to get many hilbert bots to join eachothers ends
+  move_direction = bot.avoidLosingMove(move_direction)
 
   bot.move(move_direction)
