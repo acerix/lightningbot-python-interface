@@ -17,7 +17,7 @@ for i in range(2, 24):
   fibonacci_numbers.append(fibonacci_numbers[i-1]+fibonacci_numbers[i-2])
 
 side_length = 0
-turn_number = 1
+turn_number = 0
 
 while bot.waitForNextTurnDirections():
 
