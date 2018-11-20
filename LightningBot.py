@@ -101,7 +101,7 @@ class LightningBot:
     return True
 
 
-  # Wait until we have direections for the next turn
+  # Wait until we have directions for the next turn
   def waitForNextTurnDirections(self):
     self.waitForNextTurn()
     self.getDirections()
@@ -393,7 +393,7 @@ class LightningBot:
 
   # Starting at `position`, and coming from `direction` return the longest path possible
   # blocked_tiles is a list of tiles that are blocked by our trail so far
-  # needs to be more efficient before it can look far ahead to be useful...
+  # needs to be more efficient before it can look far enough ahead to be useful...
   def longestPathDepth(self, position, direction, blocked_tiles, limit = 8):
 
     max_depth = 0
