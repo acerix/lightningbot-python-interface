@@ -449,7 +449,7 @@ class LightningBot:
 
     # Return the next found move that is ok
     for try_direction in [0, 1, 2, 3]:
-      if try_direction in allowed_directions:
+      if try_direction in allowed_directions and try_direction != (direction + 2) % 4:
         return try_direction
 
     # Surrender
