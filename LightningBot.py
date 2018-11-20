@@ -134,7 +134,11 @@ class LightningBot:
       if response_data['error'] == 1:
         if response_data['description'] == 'The token is invalid.':
           print(response_data['description'])
-          print('This probably means that no competitor joined within the timeout. Consider running 2 bots in parallel so they compete against eachother.')
+          print('This probably means that no competitor joined within the timeout. Consider running 2 bots in parallel so they compete against each other.')
+          exit()
+        if response_data['description'] == 'The direction is invalid.':
+          print(response_data['description'])
+          print('This means your bot tried to move backwards or maybe surrendered.')
           exit()
         print('A parameter is invalid.')
         print(response_data['description'])
@@ -143,7 +147,7 @@ class LightningBot:
       if response_data['error'] == 2:
         if response_data['description'] == 'The Connect phase is over.':
           print(response_data['description'])
-          print('This probably means there\'s a game in progress. Try again when that game has ended.')
+          print('There\' a game in progress, try again when it\'s over.')
           exit()
         print('Game Over!')
         print(response_data['description'])
