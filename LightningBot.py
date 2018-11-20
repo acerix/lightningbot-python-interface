@@ -397,8 +397,8 @@ class LightningBot:
     direction = self.game_bots[self.bot_name]['direction']
 
     # Not allowed to go backwards
-    if move_direction == (direction + 2) % 4:
-      print('Trying to go backwards!!')
+    if move_direction == (direction + 2) % 4 and self.move_direction > -1:
+      print('Trying to go backwards!', move_direction, direction)
 
       # Reverse to fix
       return direction
@@ -418,3 +418,54 @@ class LightningBot:
     self.move(-1)
     raise Exception('No moves left, surrendered.')
 
+
+  # Starting at `position`, and coming from `direction` return the longest path possible
+  # blocked_tiles is a list of tiles that are blocked by our trail so far
+  # needs to be more efficient before it can look far ahead to be useful...
+  def longestWallPathDepth(self, position, direction, blocked_tiles, limit = 8):
+
+    max_depth = 0
+
+    new_position = self.getNextPosition(position, direction)
+    new_blocked_tiles = blocked_tiles[:]
+    new_blocked_tiles.append(new_position)
+
+    for turn_direction in [0, -1, 1]:
+
+      try_direction = (direction + turn_direction) % 4
+
+      if new_position in blocked_tiles or self.positionIsBlocked(new_position) or limit == 0:
+        depth = 0
+      else:
+        depth = 1 + self.longestPalongestWallPathDepththDepth(new_position, try_direction, new_blocked_tiles, limit - 1)
+
+      if depth > max_depth:
+        max_depth = depth
+
+    return max_depth
+
+  # Return the direction that leads to the longest possible path along a wall
+  def directionToLongestWallPath(self):
+
+    position = self.game_bots[self.bot_name]['position']
+    direction = self.game_bots[self.bot_name]['direction']
+
+    if direction < 0:
+      return random.randint(0, 3)
+
+    max_depth = 0
+    max_depth_direction = direction
+
+    for turn_direction in [0, -1, 1]:
+
+      try_direction = (direction + turn_direction) % 4
+
+      depth = self.longestWallPathDepth(position, try_direction, [], )
+
+      print('turn', turn_direction, 'depth', depth)
+
+      if depth > max_depth:
+        max_depth = depth
+        max_depth_direction = try_direction
+
+    return max_depth_direction
