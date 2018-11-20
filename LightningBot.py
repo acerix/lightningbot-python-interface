@@ -132,6 +132,10 @@ class LightningBot:
 
       # A parameter is invalid.
       if response_data['error'] == 1:
+        if response_data['description'] == 'The token is invalid.':
+          print(response_data['description'])
+          print('This probably means that no competitor joined within the timeout. Consider running 2 bots in parallel so they compete against eachother.')
+          exit()
         print('A parameter is invalid.')
         print(response_data['description'])
 
