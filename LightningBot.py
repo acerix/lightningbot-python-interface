@@ -125,18 +125,48 @@ class LightningBot:
     # "the response also contains a description string that holds more details about the error, and an error code"
     if response_data['success'] is not True:
 
-      # Game is over
+      # The request path is invalid.
+      if response_data['error'] == 0:
+        print('The request path is invalid.')
+        print(response_data['description'])
+
+      # A parameter is invalid.
+      if response_data['error'] == 1:
+        print('A parameter is invalid.')
+        print(response_data['description'])
+
+      # The requested phase is over.
       if response_data['error'] == 2:
+        print('Game Over!')
+        print(response_data['description'])
+        exit()
+
+      # The requested phase is not yet in progress.
+      if response_data['error'] == 3:
+        print('The requested phase is not yet in progress, moron.')
+        print(response_data['description'])
+
+      # The game is full, the 20 bots limit is reached.
+      if response_data['error'] == 100:
+        print('The game is full')
+        print(response_data['description'])
+        exit()
+
+      # The token is already used in the game.
+      if response_data['error'] == 101:
+        print('The token is already used in the game.')
         print(response_data['description'])
         exit()
 
       # Bot won
       if response_data['error'] == 200:
+        print('Winner!')
         print(response_data['description'])
         exit()
 
       # Bot died
       if response_data['error'] == 201:
+        print('Died!')
         print(response_data['description'])
         exit()
 
