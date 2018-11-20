@@ -141,6 +141,10 @@ class LightningBot:
 
       # The requested phase is over.
       if response_data['error'] == 2:
+        if response_data['description'] == 'The Connect phase is over.':
+          print(response_data['description'])
+          print('This probably means there\'s a game in progress. Try again when that game has ended.')
+          exit()
         print('Game Over!')
         print(response_data['description'])
         exit()
