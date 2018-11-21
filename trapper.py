@@ -12,7 +12,7 @@ bot = LightningBot(
 move_direction = randint(0, 3)
 
 # Cycle of turns to make
-turn_path = [0, 0, 1, 0, 1, 0, 0, 0, 0, -1, 0, -1, 0, 0]
+turn_path = [0, 0, 0, 1, 1, -1, 1, 0, 0, 0, 0, 0, -1, -1, 1, -1, 0, 0]
 
 # Randomize where in the cycle to start
 cycle_offset = randint(0, len(turn_path))
