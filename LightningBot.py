@@ -457,8 +457,8 @@ class LightningBot:
         return try_direction
 
     # Surrender
-    self.move(-1)
-    raise Exception('No moves left, surrendered.')
+    #self.move(-1)
+    raise Exception('No moves left, surrendering.')
 
 
   # Starting at `position`, and coming from `direction` return the longest path possible
