@@ -387,7 +387,7 @@ class LightningBot:
 
       depth = self.longestPathDepth(position, try_direction, [], )
 
-      print('turn', turn_direction, 'depth', depth)
+      #print('turn', turn_direction, 'depth', depth)
 
       if depth > max_depth:
         max_depth = depth
