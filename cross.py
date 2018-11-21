@@ -6,7 +6,7 @@ from LightningBot import LightningBot
 from random import randint, shuffle
 
 bot = LightningBot(
-  bot_name = 'Christ' + '%04d' % randint(0, 9999),
+  bot_name = 'Cross' + '%04d' % randint(0, 9999),
 )
 
 
