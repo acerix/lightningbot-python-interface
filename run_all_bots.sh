@@ -17,13 +17,17 @@
 ./trapper.py &
 ./waller.py &
 
-# Use losers for the rest of the 20
-./loser.py &
-./loser.py &
-./loser.py &
+# Use snowflakes for the rest of the 20
 
-./loser.py &
-./loser.py &
-./loser.py &
-./loser.py &
-./loser.py &
+# delay connection since these are lower priority
+sleep 0.1
+
+./snowflake.py &
+./snowflake.py &
+./snowflake.py &
+
+./snowflake.py &
+./snowflake.py &
+./snowflake.py &
+./snowflake.py &
+./snowflake.py &

@@ -479,7 +479,7 @@ class LightningBot:
       if new_position in blocked_tiles or self.positionIsBlocked(new_position) or limit == 0:
         depth = 0
       else:
-        depth = 1 + self.longestPalongestWallPathDepththDepth(new_position, try_direction, new_blocked_tiles, limit - 1)
+        depth = 1 + self.longestWallPathDepth(new_position, try_direction, new_blocked_tiles, limit - 1)
 
       if depth > max_depth:
         max_depth = depth
