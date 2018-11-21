@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 
-# Draw crosses
+# Zigzags leaving short dead-end "traps" that dumb bots will go down (this bot included)
 
 from LightningBot import LightningBot
 from random import randint, shuffle
 
 bot = LightningBot(
-  bot_name = 'Cross' + '%04d' % randint(0, 9999),
+  bot_name = 'Trapr' + '%04d' % randint(0, 9999),
 )
 
 move_direction = randint(0, 3)
 
 # Cycle of turns to make
-turn_path = [0, -1, 1, 1, -1, 1, 1, -1, 1, 1, -1, 0, -1]
+turn_path = [0, 0, 1, 0, 1, 0, 0, 0, 0, -1, -1, 0, 0]
 
 # Randomize where in the cycle to start
 cycle_offset = randint(0, len(turn_path))
