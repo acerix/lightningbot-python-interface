@@ -8,10 +8,10 @@ from pprint import pprint
 from sys import argv
 
 class LightningBot:
-  """Python interface for lightingbot.tk"""
+  """Python interface for lightingbot"""
 
-  TEST_API_URL = 'https://lightningbot.tk/api/test'
-  RANKED_API_URL = 'https://lightningbot.tk/api'
+  TEST_API_URL = 'https://lightningbot.cf/api/test'
+  RANKED_API_URL = 'https://lightningbot.cf/api'
 
   DIRECTION_NAMES = {
     -2: 'Dead',
@@ -44,7 +44,7 @@ class LightningBot:
     self.session = requests.Session()
 
     # Minimum round trip time of server requests in seconds
-    # Ping lightningbot.tk to measure your latency
+    # Ping to measure your latency
     self.latency = timedelta(milliseconds=75)
 
     # Turn number, first actual turn is 1
